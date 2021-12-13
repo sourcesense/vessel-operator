@@ -36,7 +36,8 @@ IMAGE_TAG_BASE ?= rascasoft/vessel-operator
 BUNDLE_IMG ?= $(IMAGE_TAG_BASE)-bundle:v$(VERSION)
 
 # Image URL to use all building/pushing image targets
-IMG ?= controller:latest
+#IMG ?= controller:latest
+IMG ?= $(IMAGE_TAG_BASE):$(VERSION)
 
 all: docker-build
 
