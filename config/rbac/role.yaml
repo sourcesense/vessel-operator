@@ -8,8 +8,12 @@ rules:
   ## Base operator rules
   ##
   - apiGroups:
-      - ""
+      - "*"
     resources:
+      - namespaces
+      - jobs
+      - services
+      - deployments
       - secrets
       - pods
       - pods/exec
