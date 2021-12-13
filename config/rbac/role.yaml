@@ -37,4 +37,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for cache.rascasoft/v1alpha1, Kind: Vessel
+  ##
+  - apiGroups:
+      - cache.rascasoft
+    resources:
+      - vessels
+      - vessels/status
+      - vessels/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules

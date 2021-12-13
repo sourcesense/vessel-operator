@@ -1,0 +1,6 @@
+apiVersion: cache.rascasoft/v1alpha1
+kind: Vessel
+metadata:
+  name: vessel-sample
+spec:
+  # Add fields here
