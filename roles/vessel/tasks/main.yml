@@ -1,2 +1,32 @@
 ---
 # tasks file for Vessel
+- name: Ensure the Vessel Namespace exists.
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    name: "{{ vessel_nsname }}"
+    state: present
+
+- name: Create vessel-collector Pod.
+  kubernetes.core.k8s:
+    state: present
+    resource_definition:
+      apiVersion: batch/v1
+      kind: Job
+      metadata:
+        name: vessel-collector
+        namespace: "{{ vessel_nsname }}"
+      spec:
+        template:
+          spec:
+            containers:
+              - name: vessel-collector
+                image: sourcesense/vessel-collector:latest
+                entrypoint: ["poetry", "run"]
+                args: ["single", "linter"]
+                env:
+                  - name: K8S_URL
+                    value: "{{ vessel_k8s_url }}"
+                  - name: K8S_TOKEN
+                    value: "{{ vessel_k8s_token }}"
+            restartPolicy: OnFailure
