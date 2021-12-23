@@ -1,5 +1,5 @@
 ---
-- name: Create the cache.rascasoft/v1alpha1.Vessel
+- name: Create the cache.sourcesense/v1alpha1.Vessel
   k8s:
     state: present
     namespace: '{{ namespace }}'

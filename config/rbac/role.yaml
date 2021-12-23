@@ -44,10 +44,10 @@ rules:
       - update
       - watch
   ##
-  ## Rules for cache.rascasoft/v1alpha1, Kind: Vessel
+  ## Rules for cache.sourcesense/v1alpha1, Kind: Vessel
   ##
   - apiGroups:
-      - cache.rascasoft
+      - cache.sourcesense
     resources:
       - vessels
       - vessels/status

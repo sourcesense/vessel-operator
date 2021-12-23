@@ -1,4 +1,4 @@
-domain: rascasoft
+domain: sourcesense
 layout:
 - ansible.sdk.operatorframework.io/v1
 plugins:
@@ -9,7 +9,7 @@ resources:
 - api:
     crdVersion: v1
     namespaced: true
-  domain: rascasoft
+  domain: sourcesense
   group: cache
   kind: Vessel
   version: v1alpha1
