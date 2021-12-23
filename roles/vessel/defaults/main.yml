@@ -13,3 +13,4 @@ vessel_tasks_modules:
   linter: 'vessel_collector.tasks.linter.VesselLinter'
   trivy: 'vessel_collector.tasks.trivy.Trivy'
 vessel_tasks_default_schedule: 3600
+vessel_ingress_enable: false

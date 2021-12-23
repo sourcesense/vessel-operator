@@ -68,3 +68,31 @@
           targetPort: 8089
         selector:
           app: vessel
+
+- name: Create Vessel ingress.
+  kubernetes.core.k8s:
+    state: present
+    resource_definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: vessel-ingress
+        namespace: "{{ vessel_nsname }}"
+        # This is a breaking change coming from ingress-nginx 1.0 you MUST pass annotations.
+        # See: https://robearlam.com/blog/nginx-ingress-breaking-change-ingress.class-now-required
+        annotations:
+          kubernetes.io/ingress.class: "{{ vessel_ingress_class }}"
+      spec:
+        rules:
+        - host: "{{ vessel_ingress_host }}"
+          http:
+            paths:
+            - pathType: Prefix
+              path: /
+              backend:
+                service:
+                  name: vessel-service
+                  port:
+                    number: 80
+  when:
+    - vessel_ingress_enable | bool

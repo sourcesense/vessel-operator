@@ -12,6 +12,7 @@ rules:
     resources:
       - namespaces
       - configmaps
+      - ingresses
       - jobs
       - services
       - deployments
