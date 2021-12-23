@@ -7,26 +7,64 @@
     name: "{{ vessel_nsname }}"
     state: present
 
-- name: Create vessel-collector Pod.
+- name: Create Vessel tasks.json ConfigMap.
   kubernetes.core.k8s:
     state: present
     resource_definition:
-      apiVersion: batch/v1
-      kind: Job
+      apiVersion: v1
+      kind: ConfigMap
       metadata:
-        name: vessel-collector
+        name: vessel-tasks-config
+        namespace: "{{ vessel_nsname }}"
+      data:
+        tasks.json: |
+          {{ lookup('template', './tasks.json.j2') | to_nice_json }}
+
+- name: Create Vessel Pod.
+  kubernetes.core.k8s:
+    state: present
+    resource_definition:
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: vessel
+        namespace: "{{ vessel_nsname }}"
+        labels:
+          app: vessel
+      spec:
+        containers:
+          - name: vessel
+            image: sourcesense/vessel-collector:latest
+            ports:
+              - containerPort: 8089
+            env:
+              - name: K8S_URL
+                value: "{{ vessel_k8s_url }}"
+              - name: K8S_TOKEN
+                value: "{{ vessel_k8s_token }}"
+            volumeMounts:
+              - name: vessel-tasks-volume
+                mountPath: /app/tasks.json
+                subPath: tasks.json
+        volumes:
+          - name: vessel-tasks-volume
+            configMap:
+              name: vessel-tasks-config
+        restartPolicy: OnFailure
+
+- name: Create Vessel service.
+  kubernetes.core.k8s:
+    state: present
+    resource_definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: vessel-service
         namespace: "{{ vessel_nsname }}"
       spec:
-        template:
-          spec:
-            containers:
-              - name: vessel-collector
-                image: sourcesense/vessel-collector:latest
-                entrypoint: ["poetry", "run"]
-                args: ["single", "linter"]
-                env:
-                  - name: K8S_URL
-                    value: "{{ vessel_k8s_url }}"
-                  - name: K8S_TOKEN
-                    value: "{{ vessel_k8s_token }}"
-            restartPolicy: OnFailure
+        ports:
+        - port: 80
+          protocol: TCP
+          targetPort: 8089
+        selector:
+          app: vessel
