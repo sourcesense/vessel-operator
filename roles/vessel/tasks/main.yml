@@ -50,7 +50,7 @@
           - name: vessel-tasks-volume
             configMap:
               name: vessel-tasks-config
-        restartPolicy: OnFailure
+        restartPolicy: Always
 
 - name: Create Vessel service.
   kubernetes.core.k8s:
