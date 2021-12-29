@@ -1,16 +1,14 @@
 ---
 # defaults file for Vessel
 
+vessel_insecure: false
 vessel_nsname: 'vessel'
-vessel_tasks:
-  linter:
-    enabled: true
-    scheduled: "{{ vessel_tasks_default_schedule }}"
-  trivy:
-    enabled: true
-    scheduled: "{{ vessel_tasks_default_schedule }}"
-vessel_tasks_modules:
-  linter: 'vessel_collector.tasks.linter.VesselLinter'
-  trivy: 'vessel_collector.tasks.trivy.Trivy'
-vessel_tasks_default_schedule: 3600
+vessel_namespaces:
+  - default
+  - kube-system
+  - kube-public
+  - kube-node-lease
+vessel_tools:
+  - linter
+  - trivy
 vessel_ingress_enable: false

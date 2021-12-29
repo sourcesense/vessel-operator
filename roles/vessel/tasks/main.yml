@@ -7,19 +7,6 @@
     name: "{{ vessel_nsname }}"
     state: present
 
-- name: Create Vessel tasks.json ConfigMap.
-  kubernetes.core.k8s:
-    state: present
-    resource_definition:
-      apiVersion: v1
-      kind: ConfigMap
-      metadata:
-        name: vessel-tasks-config
-        namespace: "{{ vessel_nsname }}"
-      data:
-        tasks.json: |
-          {{ lookup('template', './tasks.json.j2') | to_nice_json }}
-
 - name: Create Vessel Pod.
   kubernetes.core.k8s:
     state: present
@@ -34,7 +21,7 @@
       spec:
         containers:
           - name: vessel
-            image: sourcesense/vessel-collector:latest
+            image: sourcesense/vessel:latest
             ports:
               - containerPort: 8089
             env:
@@ -42,14 +29,12 @@
                 value: "{{ vessel_k8s_url }}"
               - name: K8S_TOKEN
                 value: "{{ vessel_k8s_token }}"
-            volumeMounts:
-              - name: vessel-tasks-volume
-                mountPath: /app/tasks.json
-                subPath: tasks.json
-        volumes:
-          - name: vessel-tasks-volume
-            configMap:
-              name: vessel-tasks-config
+              - name: INSECURE
+                value: "{{ vessel_insecure | string }}"
+              - name: NAMESPACES
+                value: "{{ vessel_namespaces | join(',')}}"
+              - name: TOOLS
+                value: "{{ vessel_tools | join(',') }}"
         restartPolicy: Always
 
 - name: Create Vessel service.

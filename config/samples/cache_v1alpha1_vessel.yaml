@@ -3,14 +3,18 @@ kind: Vessel
 metadata:
   name: vessel-sample
 spec:
+  vessel_insecure: true
   vessel_nsname: 'myvessel'
   vessel_k8s_url: 'https://192.168.122.199:8443'
   vessel_k8s_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6ImJnUUJYZjVTNk5WUk9uY3ExQjFnT1V3Ulk1SF9LZ2hzVk5ZRnAtd1VpZGcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJrOHNhZG1pbi10b2tlbi1zNmh6YyIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJrOHNhZG1pbiIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjIzNGRlOTFlLWRiMDMtNGZiOC1iOTllLTUzOWYzZDk3MTg4OCIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlLXN5c3RlbTprOHNhZG1pbiJ9.11XmEo1uraqNwlkBReV9HXJ8JVoyT7cu5LKfZRAtSKnd94yuNxyMhvwINiv-LC2GhusXlZeCHv7VKmd0mPVEDeLSaXkquuDCETx4f4Q7jh-g5Cq5sN8OG2KaVvIQZYNUWF5Ifkfit0OsCViBBm8eytEkR-NPldVt5bUCCADbzPjTQXEYAJBexv8214UG2BZ3Asz4HAefGyQz1SDardWx6HpMDfgt6F1OBZ1XCOfEkSmb09C260PBsjaEjwyCTFP_I_i0g1t9FDXN87G3dtBogfepnC8bwp1GWq0tKAVafM-2HRK5YoytvdgOpvwwbqkeIXompNCQXrtciosJNsRIjg'
-  vessel_tasks:
-    linter:
-      enabled: true
-    trivy:
-      enabled: false
+  vessel_namespaces:
+    - default
+    - kube-system
+    - kube-public
+    - kube-node-lease
+    - mynamespace
+  vessel_tools:
+    - linter
   vessel_ingress_enable: true
   vessel_ingress_host: 'vessel.sourcesense.com'
   vessel_ingress_class: 'nginx'
