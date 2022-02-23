@@ -3,4 +3,5 @@
 # It should be run by config/default
 resources:
 - bases/cache.sourcesense_vessels.yaml
+- bases/cache.sourcesense_vesselmons.yaml
 #+kubebuilder:scaffold:crdkustomizeresource

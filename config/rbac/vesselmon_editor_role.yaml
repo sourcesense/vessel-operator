@@ -1,0 +1,24 @@
+# permissions for end users to edit vesselmons.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: vesselmon-editor-role
+rules:
+- apiGroups:
+  - cache.sourcesense
+  resources:
+  - vesselmons
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - cache.sourcesense
+  resources:
+  - vesselmons/status
+  verbs:
+  - get

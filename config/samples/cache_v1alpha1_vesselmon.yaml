@@ -1,0 +1,6 @@
+apiVersion: cache.sourcesense/v1alpha1
+kind: VesselMon
+metadata:
+  name: vesselmon-sample
+spec:
+  # Add fields here

@@ -13,4 +13,11 @@ resources:
   group: cache
   kind: Vessel
   version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: sourcesense
+  group: cache
+  kind: VesselMon
+  version: v1alpha1
 version: "3"

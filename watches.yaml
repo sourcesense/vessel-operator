@@ -4,4 +4,8 @@
   group: cache.sourcesense
   kind: Vessel
   role: vessel
+- version: v1alpha1
+  group: cache.sourcesense
+  kind: VesselMon
+  role: vesselmon
 #+kubebuilder:scaffold:watch

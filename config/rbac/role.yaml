@@ -60,4 +60,21 @@ rules:
       - patch
       - update
       - watch
+  ##
+  ## Rules for cache.sourcesense/v1alpha1, Kind: VesselMon
+  ##
+  - apiGroups:
+      - cache.sourcesense
+    resources:
+      - vesselmons
+      - vesselmons/status
+      - vesselmons/finalizers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
 #+kubebuilder:scaffold:rules
