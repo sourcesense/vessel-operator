@@ -1,2 +1,93 @@
 ---
 # tasks file for VesselMon
+- name: Ensure the VesselMon Namespace exists.
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    name: "{{ vesselmon_nsname }}"
+    state: present
+
+- name: Create VesselMon prometheus.yml ConfigMap.
+  kubernetes.core.k8s:
+    state: present
+    resource_definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: vesselmon-prometheus-yml
+        namespace: "{{ vesselmon_nsname }}"
+      data:
+        prometheus.yml: |
+          {{ lookup('template', './prometheus.yml.j2') }}
+
+- name: Create VesselMon Pod.
+  kubernetes.core.k8s:
+    state: present
+    resource_definition:
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: vesselmon
+        namespace: "{{ vesselmon_nsname }}"
+        labels:
+          app: vesselmon
+      spec:
+        containers:
+          - name: prometheus
+            image: prom/prometheus
+            ports:
+              - containerPort: 9090
+            volumeMounts:
+              - name: vesselmon-prometheus-yml-volume
+                mountPath: /etc/prometheus/prometheus.yml
+                subPath: prometheus.yml
+        volumes:
+          - name: vesselmon-prometheus-yml-volume
+            configMap:
+              name: vesselmon-prometheus-yml
+        restartPolicy: Always
+
+- name: Create VesselMon service.
+  kubernetes.core.k8s:
+    state: present
+    resource_definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: vesselmon-service
+        namespace: "{{ vesselmon_nsname }}"
+      spec:
+        ports:
+        - port: 80
+          protocol: TCP
+          targetPort: 9090
+        selector:
+          app: vesselmon
+
+- name: Create VesselMon ingress.
+  kubernetes.core.k8s:
+    state: present
+    resource_definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: vesselmon-ingress
+        namespace: "{{ vesselmon_nsname }}"
+        # This is a breaking change coming from ingress-nginx 1.0 you MUST pass annotations.
+        # See: https://robearlam.com/blog/nginx-ingress-breaking-change-ingress.class-now-required
+        annotations:
+          kubernetes.io/ingress.class: "{{ vesselmon_ingress_class }}"
+      spec:
+        rules:
+        - host: "{{ vesselmon_ingress_host }}"
+          http:
+            paths:
+            - pathType: Prefix
+              path: /
+              backend:
+                service:
+                  name: vesselmon-service
+                  port:
+                    number: 80
+  when:
+    - vesselmon_ingress_enable | bool

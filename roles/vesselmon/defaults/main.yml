@@ -1,2 +1,8 @@
 ---
 # defaults file for VesselMon
+
+vesselmon_nsname: 'vessel'
+vesselmon_ingress_enable: false
+
+vesselmon_prometheus_job_name: 'VesselMon'
+vesselmon_prometheus_targets: {}
