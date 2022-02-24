@@ -3,6 +3,7 @@
 
 vessel_insecure: false
 vessel_nsname: 'vessel'
+vessel_container_version: 'stable'
 vessel_namespaces:
   - default
   - kube-system

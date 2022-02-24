@@ -21,7 +21,7 @@
       spec:
         containers:
           - name: vessel
-            image: sourcesense/vessel:latest
+            image: "sourcesense/vessel:{{ vessel_container_version }}"
             ports:
               - containerPort: 8089
             env:
