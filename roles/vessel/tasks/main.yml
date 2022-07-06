@@ -63,11 +63,8 @@
       metadata:
         name: vessel-ingress
         namespace: "{{ vessel_nsname }}"
-        # This is a breaking change coming from ingress-nginx 1.0 you MUST pass annotations.
-        # See: https://robearlam.com/blog/nginx-ingress-breaking-change-ingress.class-now-required
-        annotations:
-          kubernetes.io/ingress.class: "{{ vessel_ingress_class }}"
       spec:
+        ingressClassName: "{{ vessel_ingress_class }}"
         rules:
         - host: "{{ vessel_ingress_host }}"
           http:
